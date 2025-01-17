@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from openai import OpenAI
 import pandas as pd
 import os
+import json
 
 # Load environment variables
 load_dotenv()
@@ -43,13 +44,11 @@ def main():
         st.image(uploaded_file, caption="Uploaded Image", use_container_width=True)
 
         # Temporary save uploaded file
-        with open("temp_image.jpg", "wb") as temp_file:
+        temp_image_path = "temp_image.jpg"
+        with open(temp_image_path, "wb") as temp_file:
             temp_file.write(uploaded_file.getbuffer())
 
-        # Replace this with a URL upload mechanism (if needed)
-        image_path = "temp_image.jpg"  # Placeholder
-
-        with open(image_path, "rb") as image_file:
+        with open(temp_image_path, "rb") as image_file:
             base64_image = base64.b64encode(image_file.read()).decode("utf-8")
 
         # AI pipeline call
@@ -77,10 +76,31 @@ def main():
 
                 # Convert to DataFrame for display
                 species_dict = event.model_dump()
-                species_df = pd.DataFrame([species_dict])
+
+
+                species_data = SpeciesData(**species_dict)
+                common_name = species_data.common_name
+
+                # Create folder based on `common_name`
+                filename = common_name.replace(' ', '_')
+                folder_name = f"data/{filename}"
+                os.makedirs(folder_name, exist_ok=True)
+
+                # Save image to folder
+                image_save_path = os.path.join(folder_name, f"{filename}.jpg")
+                with open(image_save_path, "wb") as f:
+                    f.write(uploaded_file.getbuffer())
+
+                # Save species_dict as JSON to folder
+                json_save_path = os.path.join(folder_name, f"{filename}.json")
+                with open(json_save_path, "w") as json_file:
+                    json.dump(species_dict, json_file, indent=4)
+
+                st.success(f"Data saved in folder: {folder_name}")
 
                 # Display extracted information
                 st.success("Species information extracted successfully!")
+                species_df = pd.DataFrame([species_dict])
                 st.table(species_df.T)
 
                 # Option to download the data as JSON

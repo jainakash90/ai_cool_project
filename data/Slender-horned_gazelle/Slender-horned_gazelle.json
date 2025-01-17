@@ -1,0 +1,15 @@
+{
+    "group": "Mammals",
+    "binomial": "Gazella leptoceros",
+    "iucn_id_no": 8979,
+    "common_name": "Slender-horned gazelle",
+    "name_language": "English",
+    "iucn_category": "Endangered",
+    "iso_a3": "DZA",
+    "total_area": 4508.69130293613,
+    "small_range": true,
+    "wb_datanam": "Algeria",
+    "wb_iso": "DZA",
+    "datanam_area": 4508.69130293613,
+    "datanam_pct_area": 100.0
+}

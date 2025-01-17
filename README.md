@@ -34,7 +34,7 @@ Welcome to the **Animal Image App**! This app allows users to explore and learn 
 
 4. Start the application:
    ```bash
-   streamlit run animal_image_app.py
+   streamlit run Upload_animal_image.py
    ```
 
 5. Open the app in your browser at the URL provided in the terminal (e.g., `http://localhost:8501`).
